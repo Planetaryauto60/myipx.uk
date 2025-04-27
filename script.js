@@ -6,14 +6,12 @@ async function getIPInfo() {
       const ip = data.ip || "Unavailable";
       const city = data.city || "Unavailable";
       const country = data.country_name || "Unknown";
-      const region = data.region || "Unknown";
       const lat = data.latitude;
       const lon = data.longitude;
   
       document.getElementById('ip').textContent = ip;
       document.getElementById('city').textContent = city;
       document.getElementById('country').textContent = country;
-      document.getElementById('region').textContent = region;
   
       if (lat && lon) {
         initMap(lat, lon);
