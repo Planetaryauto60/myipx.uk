@@ -6,7 +6,7 @@
   <script>
     async function outputJson() {
       try {
-        const res = await fetch('https://www.cloudflare.com/cdn-cgi/trace');
+        const res = await fetch('/cdn-cgi/trace');
         const text = await res.text();
         const info = {};
         text.trim().split('\n').forEach(line => {
