@@ -1,1 +1,40 @@
-Hello World
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>IP Info</title>
+</head>
+<body>
+  <h1>Your IP Information</h1>
+  <pre id="ipInfo">Loading...</pre>
+
+  <script>
+    async function fetchIPInfo() {
+      try {
+        const response = await fetch('https://www.cloudflare.com/cdn-cgi/trace');
+        const data = await response.text();
+        
+        const info = {};
+        data.trim().split('\n').forEach(line => {
+          const [key, value] = line.split('=');
+          info[key] = value;
+        });
+
+        const output = [{
+          ip: info.ip || 'Unknown',
+          location: info.loc || 'Unknown',
+          userAgent: navigator.userAgent,
+          time: new Date().toISOString()
+        }];
+
+        document.getElementById('ipInfo').textContent = JSON.stringify(output, null, 2);
+      } catch (error) {
+        document.getElementById('ipInfo').textContent = 'Error fetching IP info.';
+        console.error(error);
+      }
+    }
+
+    fetchIPInfo();
+  </script>
+</body>
+</html>
