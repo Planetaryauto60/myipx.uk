@@ -1,39 +1,28 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>IP Info</title>
-  <script>
-    async function outputJson() {
-      try {
-        const res = await fetch('/cdn-cgi/trace');
-        const text = await res.text();
-        const info = {};
-        text.trim().split('\n').forEach(line => {
-          const [key, value] = line.split('=');
-          info[key] = value;
-        });
-
-        const output = [{
-          ip: info.ip || 'Unknown',
-          location: info.loc || 'Unknown',
-          userAgent: navigator.userAgent,
-          time: new Date().toISOString()
-        }];
-
-        // Replace entire page with JSON
-        document.open();
-        document.write(JSON.stringify(output));
-        document.close();
-      } catch (error) {
-        document.open();
-        document.write(JSON.stringify([{ error: "Failed to fetch IP info" }]));
-        document.close();
-      }
-    }
-
-    outputJson();
-  </script>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Your IP Info</title>
+  <link rel="stylesheet" href="style.css">
+  <link 
+    rel="stylesheet" 
+    href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" 
+    crossorigin=""
+  />
 </head>
-<body></body>
+<body>
+  <div class="container">
+    <h1>Your IP Information</h1>
+    <div class="info">
+      <p><strong>IP Address:</strong> <span id="ip">Loading...</span></p>
+      <p><strong>City:</strong> <span id="city">Loading...</span></p>
+      <p><strong>Country:</strong> <span id="country">Loading...</span></p>
+    </div>
+    <div id="map"></div>
+  </div>
+
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin=""></script>
+  <script src="script.js"></script>
+</body>
 </html>
