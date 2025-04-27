@@ -18,6 +18,8 @@ async function getIPInfo() {
       } else {
         document.getElementById('map').innerHTML = "<p style='margin-top:20px;'>Location not available.</p>";
       }
+  
+      setupCopyButton(ip);
     } catch (error) {
       console.error("Error fetching IP info:", error);
       document.getElementById('ip').textContent = "Error";
@@ -25,6 +27,21 @@ async function getIPInfo() {
       document.getElementById('country').textContent = "Error";
       document.getElementById('map').innerHTML = "<p style='margin-top:20px;'>Unable to load map.</p>";
     }
+  }
+  
+  function setupCopyButton(ip) {
+    const copyBtn = document.getElementById('copy-btn');
+    copyBtn.addEventListener('click', async () => {
+      try {
+        await navigator.clipboard.writeText(ip);
+        copyBtn.textContent = "Copied!";
+        setTimeout(() => {
+          copyBtn.textContent = "Copy";
+        }, 1500);
+      } catch (err) {
+        console.error('Failed to copy!', err);
+      }
+    });
   }
   
   function initMap(lat, lon) {
