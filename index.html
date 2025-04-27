@@ -3,27 +3,37 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Your IP Info</title>
+  <title>Your IP Information</title>
   <link rel="stylesheet" href="style.css">
   <link 
     rel="stylesheet" 
     href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" 
     crossorigin=""
   />
+  <link rel="icon" href="https://www.cloudflare.com/favicon.ico" type="image/x-icon">
 </head>
 <body>
   <div class="container">
     <h1>Your IP Information</h1>
     <div class="info">
-      <p>
-        <strong>IP Address:</strong> 
-        <span id="ip">Loading...</span>
-        <button id="copy-btn">Copy</button>
-      </p>
-      <p><strong>City:</strong> <span id="city">Loading...</span></p>
-      <p><strong>Country:</strong> <span id="country">Loading...</span></p>
+      <div class="card">
+        <div class="card-icon">🌐</div>
+        <p><strong>IP Address:</strong> <span id="ip">Loading...</span> <button id="copy-btn">Copy</button></p>
+      </div>
+      <div class="card">
+        <div class="card-icon">🌍</div>
+        <p><strong>Country:</strong> <span id="country">Loading...</span></p>
+      </div>
+      <div class="card">
+        <div class="card-icon">🏙️</div>
+        <p><strong>City:</strong> <span id="city">Loading...</span></p>
+      </div>
+      <div class="card">
+        <div class="card-icon">🌎</div>
+        <p><strong>Region/State:</strong> <span id="region">Loading...</span></p>
+      </div>
+      <div id="map"></div>
     </div>
-    <div id="map"></div>
   </div>
 
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin=""></script>
