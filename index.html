@@ -1,21 +1,15 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
   <meta charset="UTF-8">
   <title>IP Info</title>
-</head>
-<body>
-  <h1>Your IP Information</h1>
-  <pre id="ipInfo">Loading...</pre>
-
   <script>
-    async function fetchIPInfo() {
+    async function outputJson() {
       try {
-        const response = await fetch('https://www.cloudflare.com/cdn-cgi/trace');
-        const data = await response.text();
-        
+        const res = await fetch('https://www.cloudflare.com/cdn-cgi/trace');
+        const text = await res.text();
         const info = {};
-        data.trim().split('\n').forEach(line => {
+        text.trim().split('\n').forEach(line => {
           const [key, value] = line.split('=');
           info[key] = value;
         });
@@ -27,14 +21,19 @@
           time: new Date().toISOString()
         }];
 
-        document.getElementById('ipInfo').textContent = JSON.stringify(output, null, 2);
+        // Replace entire page with JSON
+        document.open();
+        document.write(JSON.stringify(output));
+        document.close();
       } catch (error) {
-        document.getElementById('ipInfo').textContent = 'Error fetching IP info.';
-        console.error(error);
+        document.open();
+        document.write(JSON.stringify([{ error: "Failed to fetch IP info" }]));
+        document.close();
       }
     }
 
-    fetchIPInfo();
+    outputJson();
   </script>
-</body>
+</head>
+<body></body>
 </html>
