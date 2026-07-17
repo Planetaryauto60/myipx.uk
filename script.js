@@ -1,6 +1,6 @@
 async function getIPInfo() {
     try {
-      const res = await fetch('https://ipapi.co/json/');
+      const res = await fetch('/api');
       const data = await res.json();
 
       const ip = data.ip || "Unavailable";
