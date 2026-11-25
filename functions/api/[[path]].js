@@ -1,7 +1,32 @@
-export async function onRequest({request}) {
- const ip=request.headers.get("CF-Connecting-IP");
- const cf=request.cf||{};
- const url=new URL(request.url);
- if(url.pathname.endsWith("/ip")) return new Response(ip,{headers:{"content-type":"text/plain","Access-Control-Allow-Origin":"*"}});
- return Response.json({ip,city:cf.city??null,region:cf.region??null,country:cf.country??null,continent:cf.continent??null,timezone:cf.timezone??null,latitude:cf.latitude??null,longitude:cf.longitude??null,asn:cf.asn??null,organization:cf.asOrganization??null,colo:cf.colo??null,userAgent:request.headers.get("User-Agent"),timestamp:new Date().toISOString()},{headers:{"Access-Control-Allow-Origin":"*","Cache-Control":"no-store"}});
+function json(data, status = 200) {
+  return new Response(JSON.stringify(data), {
+    status,
+    headers: {
+      'Content-Type': 'application/json; charset=utf-8',
+      'Cache-Control': 'no-store, private',
+      'Access-Control-Allow-Origin': '*',
+      'X-Content-Type-Options': 'nosniff',
+    },
+  });
+}
+
+export async function onRequest({ request }) {
+  if (request.method !== 'GET' && request.method !== 'HEAD') {
+    return json({ error: 'Method not allowed' }, 405);
+  }
+
+  const rawAddress = request.headers.get('CF-Connecting-IP');
+  if (!rawAddress) {
+    return json({ ip: null, ipv4: null, ipv6: null, version: null });
+  }
+
+  // Cloudflare supplies the address of the client connection reaching this Worker.
+  const version = rawAddress.includes(':') ? 6 : 4;
+
+  return json({
+    ip: rawAddress,
+    ipv4: version === 4 ? rawAddress : null,
+    ipv6: version === 6 ? rawAddress : null,
+    version,
+  });
 }

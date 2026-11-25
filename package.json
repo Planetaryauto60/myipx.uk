@@ -1,0 +1,8 @@
+{
+  "name": "myipx-uk",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "test": "node --test"
+  }
+}

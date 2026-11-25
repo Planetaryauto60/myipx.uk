@@ -1,38 +1,56 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Your IP Information</title>
-  <link rel="stylesheet" href="style.css">
-  <link 
-    rel="stylesheet" 
-    href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" 
-    crossorigin=""
-  />
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f4f3ee">
+  <meta name="description" content="A simple, privacy-first way to check the public IP address your connection uses.">
+  <title>myipx.uk — your IP, plainly</title>
+  <link rel="stylesheet" href="/style.css">
+  <script src="/script.js" defer></script>
 </head>
 <body>
-  <div class="container">
-    <h1>myipx.uk</h1>
-    <div class="info">
-      <div class="card">
-        <div class="card-icon">🌐</div>
-        <p><strong>IP Address:</strong> <span id="ip">Loading...</span> <button id="copy-btn">Copy</button></p>
-      </div>
-      <div class="card">
-        <div class="card-icon">🌍</div>
-        <p><strong>Country:</strong> <span id="country">Loading...</span></p>
-      </div>
-      <div class="card">
-        <div class="card-icon">🏙️</div>
-        <p><strong>City:</strong> <span id="city">Loading...</span></p>
-      </div>
-    </div>
-    <div id="map"></div>
-    <div>Powered by cloudflare workers</div>
-  </div>
+  <header class="topbar">
+    <a class="wordmark" href="/" aria-label="myipx.uk home"><span class="mark">m</span> myipx<span class="domain">.uk</span></a>
+    <span class="privacy"><span class="status-dot"></span> No tracking. No logs.</span>
+  </header>
 
-  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin=""></script>
-  <script src="script.js"></script>
+  <main>
+    <section class="intro">
+      <p class="eyebrow">A little clarity for your connection</p>
+      <h1>Your internet<br><span>address.</span></h1>
+      <p class="lede">The public IP address websites see when you connect.</p>
+    </section>
+
+    <section class="address-card" aria-labelledby="address-heading">
+      <div class="card-head">
+        <div><span class="label">YOUR CONNECTION</span><h2 id="address-heading">IP address</h2></div>
+        <span class="live"><span class="status-dot"></span> LIVE</span>
+      </div>
+      <div class="ip-row">
+        <div class="ip-content"><span id="family" class="family">Checking connection…</span><output id="ip" class="ip-value" aria-live="polite">—</output></div>
+        <button id="copy-btn" class="copy-button" type="button" disabled><span aria-hidden="true">▢</span> Copy</button>
+      </div>
+      <p id="hint" class="hint">Your IP is read directly from the connection reaching this page.</p>
+    </section>
+
+    <section class="api-panel" aria-labelledby="api-heading">
+      <div class="api-copy"><p class="eyebrow">FOR THE TERMINAL</p><h2 id="api-heading">A tiny API.<br>Just the facts.</h2><p>Get this connection’s IP as JSON. No key, setup, or extra fields.</p></div>
+      <div class="code-card"><div class="code-top"><span><i></i><i></i><i></i></span><span>GET /api</span><button id="copy-command" type="button" aria-label="Copy curl command">Copy</button></div><pre><code>curl https://myipx.uk/api</code></pre><pre class="response"><code id="example-json">{
+  "ip": "…",
+  "ipv4": null,
+  "ipv6": null,
+  "version": null
+}</code></pre></div>
+    </section>
+
+    <section class="details" aria-label="About this service">
+      <div><span class="detail-number">01</span><p><strong>Private by design</strong><br>We don’t store request data or load third-party scripts.</p></div>
+      <div><span class="detail-number">02</span><p><strong>IPv4 and IPv6</strong><br>See the address family your current connection uses.</p></div>
+      <div><span class="detail-number">03</span><p><strong>Location is optional</strong><br>No location data is collected or sent to a map provider.</p></div>
+    </section>
+  </main>
+
+  <footer><span>myipx.uk</span><span>Small, useful, and respectful of your privacy.</span></footer>
 </body>
 </html>
