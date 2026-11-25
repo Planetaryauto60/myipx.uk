@@ -1,42 +1,38 @@
-const ip = document.querySelector('#ip');
-const family = document.querySelector('#family');
+const ipOutput = document.querySelector('#ip');
+const familyLabel = document.querySelector('#family');
 const hint = document.querySelector('#hint');
 const copyButton = document.querySelector('#copy-btn');
-const exampleJson = document.querySelector('#example-json');
+let address = '';
 
 async function loadAddress() {
   try {
     const response = await fetch('/api', { headers: { Accept: 'application/json' } });
     if (!response.ok) throw new Error('Request failed');
     const data = await response.json();
-    ip.textContent = data.ip || 'Unavailable';
-    family.textContent = data.version ? `IPv${data.version} · this connection` : 'Address unavailable';
-    hint.textContent = data.ip
-      ? 'Only the address family used for this connection is available here. The other family cannot be discovered from this request.'
-      : 'No client IP address was available for this request.';
-    copyButton.disabled = !data.ip;
-    exampleJson.textContent = JSON.stringify(data, null, 2);
-    copyButton.addEventListener('click', () => copy(data.ip, copyButton, 'Copy'));
+    address = data.ip || '';
+    ipOutput.textContent = address || 'Unavailable';
+    familyLabel.textContent = data.version ? `IPv${data.version}` : 'Address unavailable';
+    hint.textContent = data.version
+      ? `This is the address used for your current ${data.version === 4 ? 'IPv4' : 'IPv6'} connection.`
+      : 'No client IP address was available.';
+    copyButton.disabled = !address;
   } catch {
-    ip.textContent = 'Unable to load';
-    family.textContent = 'Connection unavailable';
-    hint.textContent = 'Please refresh to try again.';
+    ipOutput.textContent = 'Unavailable';
+    familyLabel.textContent = 'Connection error';
+    hint.textContent = 'Could not retrieve your IP address. Refresh to try again.';
   }
 }
 
-async function copy(value, button, label) {
+copyButton.addEventListener('click', async () => {
+  if (!address) return;
   try {
-    await navigator.clipboard.writeText(value);
-    button.textContent = 'Copied';
-    window.setTimeout(() => { button.textContent = label; }, 1400);
+    await navigator.clipboard.writeText(address);
+    copyButton.textContent = 'Copied';
+    window.setTimeout(() => { copyButton.textContent = 'Copy'; }, 1300);
   } catch {
-    button.textContent = 'Copy failed';
-    window.setTimeout(() => { button.textContent = label; }, 1400);
+    copyButton.textContent = 'Copy failed';
+    window.setTimeout(() => { copyButton.textContent = 'Copy'; }, 1300);
   }
-}
-
-document.querySelector('#copy-command').addEventListener('click', (event) => {
-  copy('curl https://myipx.uk/api', event.currentTarget, 'Copy');
 });
 
 loadAddress();
