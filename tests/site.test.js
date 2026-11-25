@@ -8,10 +8,11 @@ const [html, script, api] = await Promise.all([
   readFile(new URL('../functions/api/[[path]].js', import.meta.url), 'utf8'),
 ]);
 
-test('page contains the live IP, family label, copy control, and API link', () => {
-  assert.match(html, /id="ip"/);
-  assert.match(html, /id="family"/);
-  assert.match(html, /id="copy-btn"/);
+test('page contains separate IPv4 and IPv6 results with copy controls and API link', () => {
+  assert.match(html, /id="ipv4"/);
+  assert.match(html, /id="ipv6"/);
+  assert.match(html, /data-address="ipv4"/);
+  assert.match(html, /data-address="ipv6"/);
   assert.match(html, /href="\/api"/);
 });
 
@@ -22,11 +23,13 @@ test('page uses a dark theme and contains no promotional sections', async () => 
   assert.doesNotMatch(html, /FOR THE TERMINAL|A little clarity|Small, useful/i);
 });
 
-test('page assets are local and do not load third-party resources', () => {
+test('page assets are local and external IP checks use only ipify', () => {
   assert.doesNotMatch(html, /<(?:script|link)[^>]+https?:\/\//i);
-  assert.doesNotMatch(script, /fetch\(['"]https?:\/\//i);
+  assert.match(script, /https:\/\/api\.ipify\.org\?format=json/);
+  assert.match(script, /https:\/\/api6\.ipify\.org\?format=json/);
+  assert.equal((script.match(/https?:\/\//g) || []).length, 2);
 });
 
-test('API response does not expose location, user-agent, or request-time data', () => {
-  assert.doesNotMatch(api, /userAgent|timestamp|latitude|longitude|country|city/i);
+test('API response does not expose user-agent or request-time data', () => {
+  assert.doesNotMatch(api, /userAgent|timestamp/i);
 });

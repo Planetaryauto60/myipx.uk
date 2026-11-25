@@ -16,8 +16,9 @@ export async function onRequest({ request }) {
   }
 
   const rawAddress = request.headers.get('CF-Connecting-IP');
+  const cf = request.cf || {};
   if (!rawAddress) {
-    return json({ ip: null, ipv4: null, ipv6: null, version: null });
+    return json({ ip: null, ipv4: null, ipv6: null, version: null, location: null, network: null });
   }
 
   // Cloudflare supplies the address of the client connection reaching this Worker.
@@ -28,5 +29,19 @@ export async function onRequest({ request }) {
     ipv4: version === 4 ? rawAddress : null,
     ipv6: version === 6 ? rawAddress : null,
     version,
+    location: {
+      city: cf.city ?? null,
+      region: cf.region ?? null,
+      country: cf.country ?? null,
+      countryName: cf.countryName ?? null,
+      latitude: cf.latitude ?? null,
+      longitude: cf.longitude ?? null,
+      timezone: cf.timezone ?? null,
+    },
+    network: {
+      asn: cf.asn ?? null,
+      organization: cf.asOrganization ?? null,
+      dataCenter: cf.colo ?? null,
+    },
   });
 }

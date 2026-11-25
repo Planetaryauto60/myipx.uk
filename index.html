@@ -11,14 +11,28 @@
 </head>
 <body>
   <main class="viewer">
-    <header><a class="brand" href="/">myipx.uk</a><span class="status"><i></i> online</span></header>
+    <header><a class="brand" href="/">myipx.uk<span> / network</span></a><span class="status"><i></i> CONNECTION ACTIVE</span></header>
     <section class="address" aria-labelledby="title">
-      <p class="label" id="title">YOUR IP ADDRESS</p>
-      <output id="ip" aria-live="polite">—</output>
-      <div class="meta"><span id="family">Checking connection…</span><button id="copy-btn" type="button" disabled>Copy</button></div>
-      <p id="hint" class="hint" aria-live="polite"></p>
+      <div class="address-heading"><p class="label" id="title">PUBLIC IP ADDRESSES</p><span class="family">DUAL-STACK CHECK</span></div>
+      <div class="ip-grid">
+        <article class="ip-card"><div class="ip-card-head"><span>IPv4</span><span id="ipv4-state" class="ip-state">Checking…</span></div><div class="ip-row"><output id="ipv4" aria-live="polite">—</output><button class="copy-btn" data-address="ipv4" type="button" disabled>Copy</button></div></article>
+        <article class="ip-card"><div class="ip-card-head"><span>IPv6</span><span id="ipv6-state" class="ip-state">Checking…</span></div><div class="ip-row"><output id="ipv6" aria-live="polite">—</output><button class="copy-btn" data-address="ipv6" type="button" disabled>Copy</button></div></article>
+      </div>
+      <p id="hint" class="hint" aria-live="polite">IPv4 and IPv6 are checked separately. If your network does not support one, it will show as unavailable.</p>
     </section>
-    <footer><a href="/api">JSON API</a><span>No tracking · No third-party requests</span></footer>
+    <section class="info" aria-label="Connection details">
+      <div class="section-title"><h1>Connection details</h1><span>Based on your current request</span></div>
+      <div class="grid">
+        <article class="detail"><span class="detail-label">COUNTRY</span><strong id="country">—</strong><small id="country-code"></small></article>
+        <article class="detail"><span class="detail-label">REGION</span><strong id="region">—</strong></article>
+        <article class="detail"><span class="detail-label">CITY</span><strong id="city">—</strong></article>
+        <article class="detail"><span class="detail-label">NETWORK / ASN</span><strong id="network">—</strong><small id="asn"></small></article>
+        <article class="detail"><span class="detail-label">CLOUDFLARE DATA CENTER</span><strong id="colo">—</strong></article>
+        <article class="detail"><span class="detail-label">TIME ZONE</span><strong id="timezone">—</strong></article>
+      </div>
+      <p class="location-note">Location is an approximate network estimate. Your IP and connection metadata are not stored by this site.</p>
+    </section>
+    <footer><a href="/api">JSON API <span aria-hidden="true">↗</span></a><span>IP checks use ipify · Location uses Cloudflare metadata</span></footer>
   </main>
 </body>
 </html>
